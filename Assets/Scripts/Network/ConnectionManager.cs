@@ -80,7 +80,9 @@ public class ConnectionManager : MonoBehaviourSingleton<ConnectionManager>
             if (connectionCallback != null)
             {
                 connectionCallback(false);
+                Debug.Log("ConnectionCallBackFalse");
             }
+            Debug.Log("It's a false");
             return;
         }
         if (connectionCallback != null)
@@ -89,6 +91,7 @@ public class ConnectionManager : MonoBehaviourSingleton<ConnectionManager>
         }
         clientSalt = NetworkManager.Instance.rnd.Next(999999999);
         state = ConnectionState.RequestingConnection;
+        Debug.Log("clientSalt: " + clientSalt);
         SendConnectionRequest();
     }
 
@@ -106,6 +109,7 @@ public class ConnectionManager : MonoBehaviourSingleton<ConnectionManager>
     {
         ConnectionRequestPacket requestPacket = new ConnectionRequestPacket();
         requestPacket.payload.clientSalt = clientSalt;
+        Debug.Log("SendConnectionRequest");
         SendToServer(requestPacket);
     }
 

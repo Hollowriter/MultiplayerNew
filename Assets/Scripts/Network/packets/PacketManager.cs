@@ -62,7 +62,7 @@ public class PacketManager : MonoBehaviourSingleton<PacketManager>, IReceiveData
         header.type = (PacketType)packet.packetType;
         Debug.Log(header.type);
 
-        if (!NetworkManager.Instance.isServer)
+        if ((PacketType)header.type == PacketType.User)
         {
             UserPacketHeader userHeader = new UserPacketHeader();
             userHeader.id = currentPacketId;

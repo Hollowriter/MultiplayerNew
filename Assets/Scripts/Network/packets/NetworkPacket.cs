@@ -45,7 +45,7 @@ public class PacketHeader
         BinaryReader br = new BinaryReader(stream);
 
         protocolId = br.ReadInt32();
-        type = (PacketType)br.ReadInt32();
+        type = (PacketType)br.ReadByte();
     }
 }
 

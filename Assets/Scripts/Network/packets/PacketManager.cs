@@ -33,6 +33,7 @@ public class PacketManager : MonoBehaviourSingleton<PacketManager>, IReceiveData
 
     public void SendPacketToClient(SerializablePacket packet, IPEndPoint iPEnd)
     {
+        Debug.Log("SendToClient");
         byte[] bytes = Serialize(packet);
         NetworkManager.Instance.SendToClient(bytes, iPEnd);
     }
@@ -49,6 +50,8 @@ public class PacketManager : MonoBehaviourSingleton<PacketManager>, IReceiveData
         {
             while (iterator.MoveNext())
             {
+                Debug.Log("Bytes: " + bytes);
+                Debug.Log("ipEndPointBroadcast: " + iterator.Current.Value._ipEndPoint);
                 NetworkManager.Instance.SendToClient(bytes, iterator.Current.Value._ipEndPoint);
             }
         }
@@ -78,6 +81,7 @@ public class PacketManager : MonoBehaviourSingleton<PacketManager>, IReceiveData
 
     public void OnReceiveData(byte[] data, IPEndPoint endPoint)
     {
+        Debug.Log("data received" + endPoint);
         PacketHeader header = new PacketHeader();
         MemoryStream memoryStream = new MemoryStream(data);
         header.Deserialize(memoryStream);

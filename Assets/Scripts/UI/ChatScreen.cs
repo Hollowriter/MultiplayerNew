@@ -58,6 +58,8 @@ public class ChatScreen : MonoBehaviourSingleton<ChatScreen>
             {
                 // NetworkManager.Instance.Broadcast(System.Text.ASCIIEncoding.UTF8.GetBytes(inputMessage.text)); // Crear packet de texto
                 manager.SendMessage(inputMessage.text, 0);
+                messages.text += inputMessage.text + System.Environment.NewLine;
+                Debug.Log("soy un cliente");
             }            
             inputMessage.ActivateInputField();
             inputMessage.Select();        

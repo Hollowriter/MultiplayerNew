@@ -8,7 +8,7 @@ public class MessageManager
     {
         StringPacket packet = new StringPacket();
         packet.payload = message;
-        PacketManager pManager = new PacketManager();
-        pManager.SendPacket(packet, objectId);
+        // PacketManager pManager = new PacketManager();
+        PacketManager.Instance.SendPacket(packet, objectId);
     }
 }

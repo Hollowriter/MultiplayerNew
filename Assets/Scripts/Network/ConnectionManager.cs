@@ -102,6 +102,7 @@ public class ConnectionManager : MonoBehaviourSingleton<ConnectionManager>
 
     private void SendToClient<T>(NetworkPacket<T> packet, IPEndPoint ipEndPoint)
     {
+        Debug.Log("IPENDPOINTCONNECTIONMANAGER: " + ipEndPoint);
         PacketManager.Instance.SendPacketToClient(packet, ipEndPoint);
     }
 
@@ -142,6 +143,7 @@ public class ConnectionManager : MonoBehaviourSingleton<ConnectionManager>
         {
             case PacketType.ConnectionRequest:
                 ReceivingConnectionRequest(stream, iPEnd);
+                Debug.Log("PasoPorAqui");
                 break;
             case PacketType.ChallengeRequest:
                 ReceivingChallengeRequest(stream, iPEnd);

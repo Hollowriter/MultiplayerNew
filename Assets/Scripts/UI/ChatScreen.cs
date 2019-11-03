@@ -20,16 +20,18 @@ public class ChatScreen : MonoBehaviourSingleton<ChatScreen>
 
     void OnReceivePacket(int id, PacketType type, Stream stream)
     {
-        if (type == (int)MainPacketType.Message)
+        Debug.Log("ElChatScreenRecibe---");
+        if (type == (byte)PacketType.Message)
         {
+            Debug.Log("---Y es un mensaje");
             StringPacket packet = new StringPacket();
             packet.Deserialize(stream);
             if (NetworkManager.Instance.isServer)
             {
-                MessageManager manager = new MessageManager();
-                manager.SendMessage(packet.payload, 0);
+                // MessageManager manager = new MessageManager();
+                MessageManager.Instance.SendMessage(packet.payload.message, 0);
             }
-            messages.text += packet.payload + System.Environment.NewLine;
+            messages.text += packet.payload.message + System.Environment.NewLine;
         }
     }
 
@@ -47,17 +49,17 @@ public class ChatScreen : MonoBehaviourSingleton<ChatScreen>
     {
         if (inputMessage.text != "")
         {
-            MessageManager manager = new MessageManager();
+            // MessageManager manager = new MessageManager();
             if (NetworkManager.Instance.isServer)
             {
                 // NetworkManager.Instance.Broadcast(System.Text.ASCIIEncoding.UTF8.GetBytes(inputMessage.text));
-                manager.SendMessage(inputMessage.text, 0);
+                MessageManager.Instance.SendMessage(inputMessage.text, 0);
                 messages.text += inputMessage.text + System.Environment.NewLine;
             }
             else
             {
                 // NetworkManager.Instance.Broadcast(System.Text.ASCIIEncoding.UTF8.GetBytes(inputMessage.text)); // Crear packet de texto
-                manager.SendMessage(inputMessage.text, 0);
+                MessageManager.Instance.SendMessage(inputMessage.text, 0);
                 messages.text += inputMessage.text + System.Environment.NewLine;
                 Debug.Log("soy un cliente");
             }            

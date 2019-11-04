@@ -6,7 +6,7 @@ public class UserPacketHeader // RECORDATORIO completar el packet header como co
     public int id;
     public int clientId;
     public int objectId;
-    // public PacketType type;
+    public UserPacketType userType;
 
     public void Serialize(Stream stream)
     {
@@ -15,6 +15,7 @@ public class UserPacketHeader // RECORDATORIO completar el packet header como co
         bw.Write(id);
         bw.Write(clientId);
         bw.Write(objectId);
+        bw.Write((byte)userType);
     }
 
     public void Deserialize(Stream stream)
@@ -24,6 +25,7 @@ public class UserPacketHeader // RECORDATORIO completar el packet header como co
         id = br.ReadInt32();
         clientId = br.ReadInt32();
         objectId = br.ReadInt32();
+        userType = (UserPacketType)br.ReadByte();
     }
 }
 
@@ -52,6 +54,7 @@ public class PacketHeader
 public abstract class NetworkPacket<P> : SerializablePacket
 {
     public PacketType packetType { get; set; }
+    public UserPacketType userType { get; set; }
     // public int clientId;
     // public IPEndPoint ipEndPoint;
     // public float timeStamp;

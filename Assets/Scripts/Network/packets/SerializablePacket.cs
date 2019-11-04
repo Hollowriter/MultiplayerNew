@@ -5,7 +5,6 @@ using UnityEngine;
 
 public enum PacketType
 {
-    Message,
     ConnectionRequest,
     ChallengeRequest,
     ChallengeResponse,
@@ -17,6 +16,7 @@ public enum PacketType
 public interface SerializablePacket
 {
     PacketType packetType { get; set; }
+    UserPacketType userType { get; set; }
 
     void Serialize(Stream stream);
     void Deserialize(Stream stream);

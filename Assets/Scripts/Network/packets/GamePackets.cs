@@ -4,10 +4,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum UserPacketType
+{
+    Message
+}
+
 public abstract class GamePacket<P> : NetworkPacket<P>
 {
-    public GamePacket(PacketType type) : base(PacketType.User)
+    public GamePacket(UserPacketType uType) : base(PacketType.User)
     {
+        this.userType = uType;
     }
 }
 
@@ -18,7 +24,7 @@ public struct StringMessage
 
 public class StringPacket : GamePacket<StringMessage>
 {
-    public StringPacket() : base(PacketType.Message)
+    public StringPacket() : base(UserPacketType.Message)
     {
     }
 

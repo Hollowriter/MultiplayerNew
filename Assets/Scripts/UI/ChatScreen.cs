@@ -18,10 +18,10 @@ public class ChatScreen : MonoBehaviourSingleton<ChatScreen>
         PacketManager.Instance.ReceivingPacket += OnReceivePacket;
     }
 
-    void OnReceivePacket(int id, PacketType type, Stream stream)
+    void OnReceivePacket(int id, UserPacketType type, Stream stream)
     {
-        Debug.Log("ElChatScreenRecibe---");
-        if (type == (byte)PacketType.Message)
+        Debug.Log("ElChatScreenRecibe---: " + type);
+        if (type == (byte)UserPacketType.Message)
         {
             Debug.Log("---Y es un mensaje");
             StringPacket packet = new StringPacket();

@@ -9,7 +9,7 @@ public class PacketManager : MonoBehaviourSingleton<PacketManager>, IReceiveData
     private Dictionary<int, Action<int, PacketType, Stream>> packetReceived = new Dictionary<int, System.Action<int, PacketType, Stream>>();
     private int currentPacketId = 0;
 
-    public Action<int, PacketType, Stream> ReceivingPacket;
+    public Action<int, UserPacketType, Stream> ReceivingPacket;
     public Action<PacketType, Stream, IPEndPoint> ReceivingInternalPacket;
     public Action<byte[], IPEndPoint> ReceiveData;
 
@@ -64,6 +64,8 @@ public class PacketManager : MonoBehaviourSingleton<PacketManager>, IReceiveData
         MemoryStream memoryStream = new MemoryStream();
         header.protocolId = currentPacketId;
         header.type = packet.packetType;
+        header.Serialize(memoryStream);
+
         Debug.Log("Serialize: " + header.type);
 
         if (header.type == PacketType.User)
@@ -72,9 +74,9 @@ public class PacketManager : MonoBehaviourSingleton<PacketManager>, IReceiveData
             userHeader.id = currentPacketId;
             userHeader.clientId = NetworkManager.Instance.clientId;
             userHeader.objectId = objectId;
+            userHeader.userType = packet.userType;
             userHeader.Serialize(memoryStream);
         }
-        header.Serialize(memoryStream);
         packet.Serialize(memoryStream);
         memoryStream.Close();
         return memoryStream.ToArray();
@@ -86,13 +88,15 @@ public class PacketManager : MonoBehaviourSingleton<PacketManager>, IReceiveData
         PacketHeader header = new PacketHeader();
         MemoryStream memoryStream = new MemoryStream(data);
         header.Deserialize(memoryStream);
+
         Debug.Log("Deserialize: " + header.type);
-        if (header.type == PacketType.User || header.type == PacketType.Message) // El packetype no es el correcto
+
+        if (header.type == PacketType.User) // El packetype no es el correcto
         {
             Debug.Log("TyperHeaderAccepted");
             UserPacketHeader userHeader = new UserPacketHeader();
             userHeader.Deserialize(memoryStream);
-            ReceivingPacket.Invoke(userHeader.objectId, header.type, memoryStream);
+            ReceivingPacket.Invoke(userHeader.objectId, userHeader.userType, memoryStream);
         }
         else
         {
